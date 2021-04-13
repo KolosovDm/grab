@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="../js/jquery.js"></script>
+	<script src="../js/raphael.js"></script>
+	<script src="../js/morris.js"></script>
+	<title>Запрос данных</title>
+</head>
+<body>
+	<h1>10 самых населённых стран в мире.</h1>
+	<input type="button" value="Зпрос данных">
+	<div id="donut"></div>
+	
+	
+	<script>
+	$('input').click(function(){
+	console.log('Ok');
+		//отправим данные на сервер
+		var  data = [];
+	 $.ajax('/', {
+		method: 'POST',
+		data: {data: 5},
+		fail: function(){alert('Не удалось отправить данные на сервер, повторите попытку');},
+		success: function(response){
+			for(var i = 0; i < response.length; i++){
+				var arr = response[i].value.split(' ');
+				var arr2 = arr[1].split(' ');
+				var tmp = parseInt(arr2[0].replace(/\s+/g, ''),10);
+				response[i].value = tmp;
+				}
+				Morris.Donut({
+					element: 'donut',
+					data: response
+					});
+			}
+				
+		})
+	})
+	</script>
+</body>
+</html>
